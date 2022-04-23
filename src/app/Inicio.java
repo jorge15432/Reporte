@@ -4,17 +4,21 @@
  */
 package app;
 
+import java.net.URL;
 import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import modelo.Conexion;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-
 
 /**
  *
@@ -39,6 +43,7 @@ public class Inicio extends javax.swing.JFrame {
     private void initComponents() {
 
         btnGenerar = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,47 +54,54 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
 
+        jTextField1.setText("Titulo");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(btnGenerar)
-                .addContainerGap(130, Short.MAX_VALUE))
+            .addComponent(btnGenerar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(99, 99, 99)
-                .addComponent(btnGenerar)
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
-   try{    
-Conexion con=new Conexion();
-Connection conn=con.getConnection();
-JasperReport reporte=null;
-String path="src\\Reportes\\Personas.jasper";
+    Conexion cn=new Conexion();
+try{
+cn.conn();
+        } catch (Exception ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    URL archivo=this.getClass().getResource("/reportes/Personas.jasper");
+JasperReport jr=null;
 
-reporte=(JasperReport) JRLoader.loadObjectFromFile(path);
-
-JasperPrint jprint=JasperFillManager.fillReport(reporte,null,conn);
-
-JasperViewer view=new JasperViewer(jprint, false);
-view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-view.setVisible(true);
-
-
+try{
+jr=(JasperReport) JRLoader.loadObject(archivo);
+JasperPrint jp=JasperFillManager.fillReport(jr, null, cn.getConn());
+JasperViewer jv=new JasperViewer(jp);
+jv.setVisible(true);
+jv.setTitle("Visor de Reportes");
 }catch(JRException ex){
-}
-        Object ex = null;
-Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE,null, ex);
+
     }//GEN-LAST:event_btnGenerarActionPerformed
+}
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,5 +140,6 @@ Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE,null, ex);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerar;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
