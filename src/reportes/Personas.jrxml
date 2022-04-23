@@ -114,7 +114,7 @@ FROM
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="21" splitType="Stretch">
+		<band height="39" splitType="Stretch">
 			<textField>
 				<reportElement x="211" y="0" width="80" height="20" uuid="6397c0f2-128f-4d41-b31c-ec2b730d97e6"/>
 				<textElement textAlignment="Right"/>
